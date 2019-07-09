@@ -18,7 +18,7 @@ func New() *http.Server {
 	e := echo.New()
 
 	health.RegisterRoutes(e)
-	srv:= &http.Server {
+	srv:= &http.Server{
 		Addr: fmt.Sprintf(":%d", 3000),
 		Handler: e,
 	}
