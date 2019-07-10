@@ -16,7 +16,8 @@ func TestRegisterRoutes(t *testing.T) {
 	RegisterRoutes(e, app)
 
 	routes := test.FilterRoutes(e.Routes())
-	assert.Len(t, routes, 2)
+	assert.Len(t, routes, 3)
 	assert.Contains(t, routes, "GET /movies")
 	assert.Contains(t, routes, "GET /movies/:id")
+	assert.Contains(t, routes, "POST /movies")
 }

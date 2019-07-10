@@ -19,6 +19,7 @@ func RegisterRoutes(e *echo.Echo, app application.App) {
 	// construct.
 	h := handler{app}
 
+	g.POST("", h.createHandler)
 	g.GET("", h.listHandler)
 	g.GET("/:id", h.retrieveHandler)
 }

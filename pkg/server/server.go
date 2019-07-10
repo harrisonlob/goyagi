@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/harrisonlob/goyagi/pkg/application"
+	"github.com/harrisonlob/goyagi/pkg/binder"
 	"github.com/harrisonlob/goyagi/pkg/health"
 	"github.com/harrisonlob/goyagi/pkg/movies"
 	"github.com/harrisonlob/goyagi/pkg/signals"
@@ -18,6 +19,9 @@ func New(app application.App) *http.Server {
 	log := logger.New()
 
 	e := echo.New()
+
+	b := binder.New()
+	e.Binder = b
 
 	health.RegisterRoutes(e)
 	movies.RegisterRoutes(e, app)
