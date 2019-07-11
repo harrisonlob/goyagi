@@ -23,6 +23,8 @@ func New(app application.App) *http.Server {
 	b := binder.New()
 	e.Binder = b
 
+	e.Use(logger.Middleware())
+
 	health.RegisterRoutes(e)
 	movies.RegisterRoutes(e, app)
 
