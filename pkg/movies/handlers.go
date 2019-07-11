@@ -61,11 +61,15 @@ func (h *handler) createHandler(c echo.Context) error {
 		ReleaseDate: params.ReleaseDate,
 	}
 
+	insertTimer := h.app.Metrics.NewTimer("goyagi.movies.create.db")
+
 	_, err := h.app.DB.Model(&movie).Insert()
 	if err != nil {
+		insertTimer.End("result:error")
 		return err
 	}
 
+	insertTimer.End("result:success")
 	return c.JSON(http.StatusOK, movie)
 }
 
