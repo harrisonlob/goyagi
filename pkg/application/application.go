@@ -4,14 +4,16 @@ import (
 	"github.com/go-pg/pg"
 	"github.com/harrisonlob/goyagi/pkg/config"
 	"github.com/harrisonlob/goyagi/pkg/database"
+	"github.com/harrisonlob/goyagi/pkg/metrics"
 	"github.com/harrisonlob/goyagi/pkg/sentry"
 	"github.com/pkg/errors"
 )
 
 type App struct {
-	Config config.Config
-	DB     *pg.DB
-	Sentry sentry.Sentry
+	Config  config.Config
+	DB      *pg.DB
+	Sentry  sentry.Sentry
+	Metrics metrics.Metrics
 }
 
 func New() (App, error) {
@@ -27,5 +29,10 @@ func New() (App, error) {
 		return App{}, errors.Wrap(err, "application")
 	}
 
-	return App{cfg, db, sentry}, nil
+	m, err := metrics.New(cfg)
+	if err != nil {
+		return App{}, errors.Wrap(err, "application")
+	}
+
+	return App{cfg, db, sentry, m}, nil
 }
