@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/harrisonlob/goyagi/pkg/application"
 	"github.com/harrisonlob/goyagi/pkg/server"
 	"github.com/lob/logger-go"
 )
@@ -10,13 +11,18 @@ import (
 func main() {
 	log := logger.New()
 
-	srv := server.New()
+	app, err := application.New()
+	if err != nil {
+		log.Err(err).Fatal("failed to initialize application")
+	}
 
-	log.Info("server started")
+	srv := server.New(app)
 
-	err := srv.ListenAndServe()
-	if err != nil && err != http.ErrServerClosed {
-		log.Err(err).Fatal("server stopped")
+	log.Info("server started", logger.Data{"port": app.Config.Port})
+
+	srv_err := srv.ListenAndServe()
+	if srv_err != nil && srv_err != http.ErrServerClosed {
+		log.Err(srv_err).Fatal("server stopped")
 	}
 
 	log.Info("server stopped")
