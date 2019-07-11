@@ -15,6 +15,7 @@ type Config struct {
 	DatabaseTLS      bool
 	Environment      string
 	Port             int
+	SentryDSN        string
 }
 
 const environmentENV = "ENVIRONMENT"
@@ -30,6 +31,7 @@ func New() Config {
 		DatabasePassword: os.Getenv("DATABASE_PASSWORD"),
 		DatabaseTLS:      true,
 		Port:             3000,
+		SentryDSN:        os.Getenv("SENTRY_DSN"),
 	}
 
 	switch os.Getenv(environmentENV) {
