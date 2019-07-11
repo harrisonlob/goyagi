@@ -7,8 +7,10 @@ import (
 
 	"github.com/harrisonlob/goyagi/pkg/application"
 	"github.com/harrisonlob/goyagi/pkg/binder"
+	"github.com/harrisonlob/goyagi/pkg/errors"
 	"github.com/harrisonlob/goyagi/pkg/health"
 	"github.com/harrisonlob/goyagi/pkg/movies"
+	"github.com/harrisonlob/goyagi/pkg/recovery"
 	"github.com/harrisonlob/goyagi/pkg/signals"
 	"github.com/labstack/echo"
 	"github.com/lob/logger-go"
@@ -24,6 +26,9 @@ func New(app application.App) *http.Server {
 	e.Binder = b
 
 	e.Use(logger.Middleware())
+	e.Use(recovery.Middleware())
+
+	errors.RegisterErrorHandler(e, app)
 
 	health.RegisterRoutes(e)
 	movies.RegisterRoutes(e, app)
